@@ -34,6 +34,7 @@ urlpatterns = [
     path('api/contracts/', include('contracts.urls')),
     path('api/interventions/', include('interventions.urls')),
     path('api/listing/', include('listing.urls')),
+    path('api/reports/', include('reports.urls')),
     
     # path('auth/', include('djoser.urls')),
     # path('auth/', include('djoser.urls.jwt')),
