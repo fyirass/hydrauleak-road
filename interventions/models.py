@@ -16,7 +16,7 @@ class Intervention(models.Model):
         PENDING = 'Pending'
         COMPLETED = 'Completed'
 
-    client = models.ForeignKey(Client, on_delete=models.DO_NOTHING)
+    # client = models.ForeignKey(Client, on_delete=models.DO_NOTHING)
     slug = models.SlugField(unique=True)
     intervention_title = models.CharField(max_length=150)
     intervention_description = models.TextField(blank=True)

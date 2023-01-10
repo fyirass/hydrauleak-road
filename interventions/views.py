@@ -10,14 +10,16 @@ class ManageInterventionView(APIView):
     def post(self, request):
         try:
             user = request.user
-            
+
             if not user.is_leaker:
-                return Response (
-                    {'error': 'User dose not have necessary permissions for creating this listing data'},
-                    status= status.HTTP_403_FORBIDDEN
+                return Response(
+                    {'error': 'User does not have necessary permissions for creating this listing data'},
+                    status=status.HTTP_403_FORBIDDEN
                 )
-            
+
             data = request.data
+
+            data = self.retrieve_values(data)
             
             # client = data['client']
             intervention_title = data['intervention_title']
@@ -80,11 +82,11 @@ class ManageInterventionView(APIView):
                 state = state ,
                 zipcode = zipcode,
     
-                is_published = is_published,
+                is_published = is_published
             )
 
             return Response(
-                { 'success': 'Listing created successfully'},
+                { 'success': 'intervention created successfully'},
                 status = status.HTTP_201_CREATED
             )
 
