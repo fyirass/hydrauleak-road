@@ -1,62 +1,53 @@
 from django.db import models
-from django.contrib.auth.models import User
+
 from PIL import Image
 
-# Create your models here.
 
-class Order(models.Model):
-    
-    id = models.IntegerField(primary_key=True)
-    product = models.CharField( max_length=50)
-    code = models.CharField(max_length=50)
-    coupon = models.IntegerField()
-    counter = models.IntegerField()
-    queue = models.IntegerField()
-    time = models.TimeField(auto_now=False, auto_now_add=False)
-    
-    def __str__(self):
-        return self.product
-    
-    
-    
 
-class users(models.Model):
-    user_first_name = models.CharField(max_length=100)
-    user_last_name = models.CharField(max_length=100)
-    user_email = models.CharField(max_length=100)
-    user_password = models.CharField(max_length=10, null=True)
 
-class Profile(models.Model):
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
-    profile_pic = models.ImageField(default="profile2.png", null=True, blank=True, upload_to='profile_pics')
-    date_created = models.DateTimeField(auto_now_add=True, null=True)
-    gender = models.CharField(max_length=200, default="Male", blank=True)
-    language = models.CharField(max_length=200, null=True, default="English", blank=True)
-    title = models.CharField(max_length=200, null=True, blank=True, default="None")
-    user_phone = models.CharField(max_length=200, null=True, blank=True, default="0000000000")
-    cell_phone = models.CharField(max_length=200, null=True, blank=True, default="0000000000")
-    fax_number = models.CharField(max_length=200, null=True, blank=True, default="0000000000")
-    postal = models.CharField(max_length=200, null=True, blank=True, default="None")
+
+
+# class users(models.Model):
+#     user_first_name = models.CharField(max_length=100)
+#     user_last_name = models.CharField(max_length=100)
+#     user_email = models.CharField(max_length=100)
+#     user_password = models.CharField(max_length=10, null=True)
+
+# class Profile(models.Model):
+    
+#     #user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    
+#     profile_pic = models.ImageField(default="profile2.png", null=True, blank=True, upload_to='profile_pics')
+#     date_created = models.DateTimeField(auto_now_add=True, null=True)
+#     gender = models.CharField(max_length=200, default="Male", blank=True)
+#     language = models.CharField(max_length=200, null=True, default="English", blank=True)
+#     title = models.CharField(max_length=200, null=True, blank=True, default="None")
+#     user_phone = models.CharField(max_length=200, null=True, blank=True, default="0000000000")
+#     cell_phone = models.CharField(max_length=200, null=True, blank=True, default="0000000000")
+#     fax_number = models.CharField(max_length=200, null=True, blank=True, default="0000000000")
+#     postal = models.CharField(max_length=200, null=True, blank=True, default="None")
     
     
     
-    def __str__(self):
-        return f'{self.user.username} Profile'
+#     def __str__(self):
+#         return f'{self.user.username} Profile'
     
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        super().save(force_insert, force_update, using, update_fields)
+#     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+#         super().save(force_insert, force_update, using, update_fields)
         
-        img = Image.open(self.profile_pic.path)
+#         img = Image.open(self.profile_pic.path)
         
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.profile_pic.path)
+#         if img.height > 300 or img.width > 300:
+#             output_size = (300, 300)
+#             img.thumbnail(output_size)
+#             img.save(self.profile_pic.path)
             
-
+ 
 
 
 class Report(models.Model):
+    
+    # profile = models.ForeignKey(Profile, null=True, on_delete=models.SET_NULL)
     
     id = models.IntegerField(primary_key=True)
     reportObject = models.CharField( max_length=50)
@@ -70,6 +61,8 @@ class Report(models.Model):
 
 class Contract(models.Model):
     
+    # profile = models.ForeignKey(Profile, null=True, on_delete=models.SET_NULL)
+    
     id = models.IntegerField(primary_key=True)   
     clientNameContract = models.CharField( max_length=50)
     contractData = models.TimeField(auto_now=False, auto_now_add=False)
@@ -79,6 +72,8 @@ class Contract(models.Model):
     
     
 class Intervention(models.Model):
+    
+    # profile = models.ForeignKey(Profile, null=True, on_delete=models.SET_NULL)
     
     id = models.IntegerField(primary_key=True)
     interventionObject = models.CharField( max_length=50)
@@ -92,6 +87,8 @@ class Intervention(models.Model):
     
     
 class KpiTracking(models.Model):
+    
+    # profile = models.OneToOneField(Profile , null=True, on_delete=models.CASCADE)
     
     id = models.IntegerField(primary_key=True)
     LeakerKpi = models.CharField( max_length=50)
@@ -120,6 +117,8 @@ class Map(models.Model):
  
 class Zone(models.Model):
     
+    map = models.ForeignKey(Map, null=True, on_delete= models.SET_NULL)
+    
     id = models.IntegerField(primary_key=True)
     zoneCity = models.CharField( max_length=50)
     zoneColor = models.CharField( max_length=50)
@@ -130,6 +129,8 @@ class Zone(models.Model):
         return self.zoneCity  
     
 class Sensor(models.Model):
+    
+    map = models.ForeignKey(Map, null=True, on_delete= models.SET_NULL)
     
     id = models.IntegerField(primary_key=True)
     sensorNumber = models.IntegerField()
@@ -143,6 +144,8 @@ class Sensor(models.Model):
     
 class Pipe(models.Model):
     
+    map = models.ForeignKey(Map, null=True, on_delete= models.SET_NULL)
+    
     id = models.IntegerField(primary_key=True)
     pipeNumber = models.IntegerField()
     pipeStreet = models.CharField( max_length=50)
@@ -154,3 +157,19 @@ class Pipe(models.Model):
     
     def __str__(self):
         return self.pipeNumber 
+    
+    
+class Pipe_acces(models.Model):
+    
+    pipe = models.ForeignKey(Pipe, null=True, on_delete= models.SET_NULL)
+    
+    id = models.IntegerField(primary_key=True)
+   
+    streetValveCor = models.CharField( max_length=50)
+    houseValveCor = models.CharField( max_length=50)
+    fireValveCor = models.CharField( max_length=50)
+    
+    
+    
+    def __str__(self):
+        return self.id

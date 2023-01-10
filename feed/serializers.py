@@ -2,17 +2,20 @@ from dataclasses import fields
 import imp
 from rest_framework import serializers
 from .models import *
+# from djoser.serializers import UserCreateSerializer
+from django.contrib.auth import get_user_model
 
+# User = get_user_model()
 
-class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = '__all__'
+# class UserCreateSerializer(UserCreateSerializer):
+#     class Meta(UserCreateSerializer.Meta):
+#         model = User
+#         fields = ('id', 'email', 'first_name', 'last_name', 'password')
 
-class ProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Profile
-        fields = '__all__'
+# # class ProfileSerializer(serializers.ModelSerializer):
+# #     class Meta:
+# #         model = Profile
+# #         fields = '__all__'
         
 class ContractSerializer(serializers.ModelSerializer):
     class Meta:
@@ -55,5 +58,8 @@ class PipeSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
         
-
+class Pipe_accesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pipe_acces
+        fields = '__all__'
         

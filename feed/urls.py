@@ -3,10 +3,12 @@ from django.urls import path, include
 from feed import views
 from rest_framework.urlpatterns import format_suffix_patterns
 
+
 urlpatterns = [
     
-    path('api/profiles/',views.profile_list),
-    path('api/Profiles/<int:id>', views.profile_detail),
+    
+    # path('api/profiles/',views.profile_list),
+    # path('api/Profiles/<int:id>', views.profile_detail),
     
     path('api/contracts/',views.contract_list),
     path('api/contracts/<int:id>', views.contract_detail),
