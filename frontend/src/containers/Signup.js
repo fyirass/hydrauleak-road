@@ -1,151 +1,109 @@
 import React, { useState } from 'react';
-import { Link, Navigate  } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Link, Navigate  } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import { setAlert } from '../actions/alert';
 import { signup } from '../actions/auth';
-import axios from 'axios';
+import PropTypes from 'prop-types';
 
-const Signup = ({ signup, isAuthenticated }) => {
-    const [accountCreated, setAccountCreated] = useState(false);
+const SignUp = ({ setAlert, signup, isAuthenticated }) => {
     const [formData, setFormData] = useState({
-        first_name: '',
-        last_name: '',
-        email: '',
         name: '',
+        email: '',
         password: '',
         re_password: ''
     });
 
-    const { first_name, last_name, email, name, password, re_password } = formData;
+    const { name, email, password, re_password } = formData;
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const onSubmit = e => {
         e.preventDefault();
 
-        if (password === re_password) {
-            signup(first_name, last_name, email, name, password, re_password);
-            setAccountCreated(true);
-        }
+        if (password !== re_password)
+            setAlert('Passwords do not match', 'error');
+        else
+            signup({ name, email, password, re_password });
     };
 
-    const continueWithGoogle = async () => {
-        try {
-            const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/o/google-oauth2/?redirect_uri=${process.env.REACT_APP_API_URL}/google`)
-
-            window.location.replace(res.data.authorization_url);
-        } catch (err) {
-
-        }
-    };
-
-    const continueWithFacebook = async () => {
-        try {
-            const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/o/facebook/?redirect_uri=${process.env.REACT_APP_API_URL}/facebook`)
-
-            window.location.replace(res.data.authorization_url);
-        } catch (err) {
-
-        }
-    };
-
-    if (isAuthenticated) {
-        return <Navigate to='/' />
-    }
-    if (accountCreated) {
-        return <Navigate to='/login' />
-    }
-
+    if (isAuthenticated)
+        return <Navigate  to='/' />;
+    
     return (
-        <div className='container mt-5'>
-            <h1>Sign Up</h1>
-            <p>Create your Account</p>
-            <form onSubmit={e => onSubmit(e)}>
-                <div className='form-group'>
-                    <input
-                        className='form-control'
+        <div className='auth'>
+            <Helmet>
+                <title>Hydrauleak Road - Sign Up</title>
+                <meta
+                    name='description'
+                    content='sign up page'
+                />
+            </Helmet>
+            <h1 className='auth__title'>Sign Up</h1>
+            <p className='auth__lead'>Create your Account</p>
+            <form className='auth__form' onSubmit={e => onSubmit(e)}>
+                <div className='auth__form__group'>
+                    <input 
+                        className='auth__form__input'
                         type='text'
-                        placeholder='First Name*'
-                        name='first_name'
-                        value={first_name}
-                        onChange={e => onChange(e)}
-                        required
-                    />
-                </div>
-                <div className='form-group'>
-                    <input
-                        className='form-control'
-                        type='text'
-                        placeholder='Last Name*'
-                        name='last_name'
-                        value={last_name}
-                        onChange={e => onChange(e)}
-                        required
-                    />
-                </div>
-                <div className='form-group'>
-                    <input
-                        className='form-control'
-                        type='text'
-                        placeholder='Name*'
+                        placeholder='Name'
                         name='name'
                         value={name}
                         onChange={e => onChange(e)}
-                        required
+                        required 
                     />
                 </div>
-                <div className='form-group'>
-                    <input
-                        className='form-control'
+                <div className='auth__form__group'>
+                    <input 
+                        className='auth__form__input'
                         type='email'
-                        placeholder='Email*'
+                        placeholder='Email'
                         name='email'
                         value={email}
                         onChange={e => onChange(e)}
-                        required
+                        required 
                     />
                 </div>
-                <div className='form-group'>
+                <div className='auth__form__group'>
                     <input
-                        className='form-control'
+                        className='auth__form__input'
                         type='password'
-                        placeholder='Password*'
+                        placeholder='Password'
                         name='password'
                         value={password}
                         onChange={e => onChange(e)}
                         minLength='6'
-                        required
                     />
                 </div>
-                <div className='form-group'>
+                <div className='auth__form__group'>
                     <input
-                        className='form-control'
+                        className='auth__form__input'
                         type='password'
-                        placeholder='Confirm Password*'
+                        placeholder='Confirm Password'
                         name='re_password'
                         value={re_password}
                         onChange={e => onChange(e)}
                         minLength='6'
-                        required
                     />
                 </div>
-                <button className='btn btn-primary' type='submit'>Register</button>
+                <button className='auth__form__button'>Register</button>
             </form>
-            <button className='btn btn-danger mt-3' onClick={continueWithGoogle}>
-                Continue With Google
-            </button>
-            <br />
-            <button className='btn btn-primary mt-3' onClick={continueWithFacebook}>
-                Continue With Facebook
-            </button>
-            <p className='mt-3'>
-                Already have an account? <Link to='/login'>Sign In</Link>
+            <p className='auth__authtext'>
+                Already have an account? <Link className='auth__authtext__link' to='/login'>Sign In</Link>
             </p>
         </div>
     );
+
+};
+
+SignUp.propTypes = {
+    setAlert: PropTypes.func.isRequired,
+    signup: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated
-});
+})
 
-export default connect(mapStateToProps, { signup })(Signup);
+export default connect(mapStateToProps, { setAlert, signup })(SignUp);
