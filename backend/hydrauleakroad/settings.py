@@ -14,6 +14,8 @@ from pathlib import Path
 import os
 from datetime import timedelta
 
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,7 +29,7 @@ SECRET_KEY = 'django-insecure-cd$o(krth9w9*weuc_(h4ptjorw_*aq1jeikbiy+e+z!8dgb7#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -101,17 +103,32 @@ WSGI_APPLICATION = 'hydrauleakroad.wsgi.application'
 # }
 
 
+# DATABASES = {
+#     'default': {
+#         #'ENGINE': 'django.db.backends.sqlite3',
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'HkRoadDb',
+#         'USER': 'postgres',
+#         'PASSWORD': 'admin',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
+
+
+
 DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.sqlite3',
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'HkRoadDb',
-        'USER': 'postgres',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
+        'NAME': 'dbcnjn954g0279',
+        'USER': 'urlj7fb9rpa6n',
+        'PASSWORD': 'p2b6f11c0d0abdac01f57cb51e00aad5594455f69d4fd545d10058757fc88b8cd',
+        'HOST': 'ec2-52-211-150-213.eu-west-1.compute.amazonaws.com',
         'PORT': '5432',
     }
 }
+
 
 
 #### sending email setting
@@ -168,10 +185,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
-#DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 

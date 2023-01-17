@@ -28,7 +28,7 @@ class SearchView(APIView):
         data = self.request.data
         
         contract_type = data['contract_type']
-        queryset = queryset.filter(sale_type__iexact=contract_type)
+        queryset = queryset.filter(contract_type__iexact=contract_type)
         
         serializer = ContractSerializer(queryset, many=True)
 
